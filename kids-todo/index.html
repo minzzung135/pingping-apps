@@ -356,18 +356,12 @@
   .sheet .sec-title{font-size:11.5px;font-weight:900;color:#c09ab4;letter-spacing:.4px;margin:0 0 7px;}
 
   /* ── 도감 버튼 (헤더) ───────────────── */
-  .dex-btn{
-    flex:none;display:inline-flex;align-items:center;gap:2px;
-    height:30px;padding:0 9px;border-radius:999px;
-    border:1.5px solid #ffdcec;background:rgba(255,255,255,.9);
-    color:#a3517f;font:inherit;font-size:clamp(9.5px,2.7vw,11px);font-weight:900;
-    letter-spacing:-.2px;white-space:nowrap;cursor:pointer;
-    box-shadow:0 4px 10px rgba(231,126,177,.16);
-    -webkit-appearance:none;appearance:none;transition:transform .12s ease;
+  .icon-btn.dex-icon{
+    border-color:#ffd0e6;background:rgba(255,255,255,.92);
+    box-shadow:0 4px 10px rgba(231,126,177,.22);
   }
-  .dex-btn:active{transform:scale(.93);}
-  .dex-btn b{color:#ef5f9c;font-size:inherit;}
-  .dex-btn .sl{color:#c9afc0;}
+  .stat.dex-stat{color:#a3517f;border-color:#ffe0ee;background:#fffafd;cursor:pointer;
+    -webkit-appearance:none;appearance:none;font-family:inherit;}
   .stat.gift{
     cursor:pointer;color:#e2497f;border-color:#ffc9e0;background:#fff3f9;
     -webkit-appearance:none;appearance:none;font-family:inherit;
@@ -566,7 +560,7 @@
       </div>
     </div>
     <div class="top-right">
-      <button class="dex-btn" id="dexBtn" type="button" aria-label="티니핑 도감 열기">📖 도감 <b id="dexBtnGot">0</b><span class="sl">/</span><span id="dexBtnTotal">152</span></button>
+      <button class="icon-btn dex-icon" id="dexBtn" type="button" aria-label="티니핑 도감 열기">📖</button>
       <button class="icon-btn" id="muteBtn" type="button" aria-label="소리 켜기/끄기">🔊</button>
     </div>
   </header>
@@ -580,6 +574,7 @@
     <div class="stats">
       <div class="stat" id="stickerStat">⭐ 누적 스티커 <em>0</em></div>
       <div class="stat" id="crownStat">👑 반짝이 왕관 <em>0</em></div>
+      <button class="stat dex-stat" id="dexStat" type="button" aria-label="티니핑 도감 열기">📖 도감 <em>0</em> / 152</button>
       <button class="stat gift" id="giftChip" type="button" style="display:none">🎁 오늘의 선물 열기</button>
     </div>
   </section>
@@ -1158,8 +1153,7 @@
   function renderDexBadge() {
     var total = allChars().length;
     var got = collectCount();
-    if ($('dexBtnGot')) $('dexBtnGot').textContent = got;
-    if ($('dexBtnTotal')) $('dexBtnTotal').textContent = total;
+    if ($('dexStat')) $('dexStat').innerHTML = '📖 도감 <em>' + got + '</em> / ' + total;
     if ($('dexCount')) $('dexCount').innerHTML = '<b>' + got + '</b> / ' + total;
     if ($('dexSub')) {
       $('dexSub').textContent = got + '명을 만났어요 · 아직 ' + (total - got) + '명이 숨어 있어요 ✨';
@@ -1684,6 +1678,11 @@
       openDex();
     });
     $('dexCloseX').addEventListener('click', closeDex);
+    $('dexStat').addEventListener('click', function () {
+      unlockAudio();
+      bell(880, 0, 0.16, 0.07, 'sine');
+      openDex();
+    });
     $('giftChip').addEventListener('click', function () {
       unlockAudio();
       openPull();
