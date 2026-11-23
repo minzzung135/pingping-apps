@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="모델3 인도검수">
+<meta name="theme-color" content="#0b0d10">
+<meta name="format-detection" content="telephone=no">
+<title>모델3 인도 검수 체크리스트</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230b0d10'/%3E%3Cpath d='M90 132c-2-24-10-52-26-70 20 8 36 8 52 0-16 18-24 46-26 70z' fill='%23e31937'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23e31937'/%3E%3Cpath d='M90 136c-2-26-11-56-28-75 21 9 38 9 56 0-17 19-26 49-28 75z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#0b0d10;
+    --card:#15181d;
+    --card-2:#1b1f25;
+    --line:rgba(255,255,255,.09);
+    --line-2:rgba(255,255,255,.16);
+    --ink:#f2f4f6;
+    --ink-2:#a9b1bb;
+    --ink-3:#6f7885;
+    --red:#e31937;
+    --red-soft:rgba(227,25,55,.14);
+    --amber:#f0b429;
+    --amber-soft:rgba(240,180,41,.14);
+    --green:#34c759;
+    --green-soft:rgba(52,199,89,.14);
+    --safe-t:env(safe-area-inset-top,0px);
+    --safe-b:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior-y:contain;
+    touch-action:manipulation;
+    min-height:100dvh;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(900px 420px at 12% -8%, rgba(227,25,55,.16), transparent 62%),
+      radial-gradient(700px 380px at 92% 4%, rgba(70,120,255,.10), transparent 60%);
+  }
+  #app{position:relative;z-index:1;max-width:640px;margin:0 auto;padding-bottom:calc(96px + var(--safe-b));}
+
+  /* ── header ── */
+  header{
+    position:sticky;top:0;z-index:20;
+    padding:calc(var(--safe-t) + 9px) 16px 8px;
+    background:rgba(11,13,16,.86);
+    -webkit-backdrop-filter:saturate(160%) blur(16px);
+    backdrop-filter:saturate(160%) blur(16px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex;align-items:center;gap:9px;}
+  .brand .mark{
+    width:22px;height:22px;border-radius:6px;background:var(--red);
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .brand .mark svg{width:12px;height:14px;display:block;}
+  .eyebrow{font-size:10px;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;font-weight:700;}
+  h1{font-size:18px;line-height:1.25;margin:5px 0 1px;letter-spacing:-.02em;}
+  .sub{font-size:12px;color:var(--ink-2);margin:0;}
+  .sub b{color:#fff;font-weight:600;}
+
+  .prog{margin-top:9px;}
+  .prog-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+  .prog-num{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+  .prog-num b{font-size:20px;color:#fff;font-weight:700;letter-spacing:-.02em;}
+  .prog-num .pc{font-size:12px;color:var(--ink-3);margin-left:5px;}
+  .prog-flags{font-size:12px;color:var(--amber);display:flex;align-items:center;gap:5px;opacity:0;transition:opacity .2s;}
+  .prog-flags.on{opacity:1;}
+  .bar{height:6px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden;margin-top:7px;}
+  .bar > i{display:block;height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#ff4b61,var(--red));transition:width .3s ease;}
+
+  .chips{display:flex;gap:6px;margin-top:9px;overflow-x:auto;scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:0 0 auto;appearance:none;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);
+    font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:99px;
+  }
+  .chip[aria-pressed="true"]{background:#fff;border-color:#fff;color:#0b0d10;}
+  .chip .n{opacity:.55;margin-left:4px;font-variant-numeric:tabular-nums;}
+
+  /* ── cards ── */
+  main{padding:14px 14px 0;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin-bottom:12px;
+  }
+  .card h2{margin:0 0 4px;font-size:14px;letter-spacing:-.01em;display:flex;align-items:center;gap:7px;}
+  .card p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.6;}
+  .card .tiny{font-size:11.5px;color:var(--ink-3);margin-top:8px;line-height:1.55;}
+
+  .steps{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:9px;}
+  .steps li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#dfe4e9;}
+  .steps .n{
+    flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--red-soft);color:#ff8d9c;
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px;
+  }
+  .steps small{display:block;color:var(--ink-3);font-size:11.5px;line-height:1.5;margin-top:2px;}
+
+  .deadline{border-color:rgba(240,180,41,.28);background:linear-gradient(180deg,rgba(240,180,41,.08),rgba(240,180,41,.03));}
+  .deadline h2{color:#ffd479;}
+  .kv{display:grid;grid-template-columns:74px 1fr;gap:5px 10px;margin-top:9px;font-size:12.5px;}
+  .kv dt{color:var(--ink-3);}
+  .kv dd{margin:0;color:#e6eaee;}
+
+  /* ── section ── */
+  .sec{border:1px solid var(--line);border-radius:16px;background:var(--card);margin-bottom:11px;overflow:hidden;}
+  .sec-head{
+    display:flex;align-items:center;gap:11px;width:100%;background:none;border:0;
+    padding:15px 15px;color:inherit;font:inherit;text-align:left;
+  }
+  .sec-ico{
+    flex:0 0 auto;width:34px;height:34px;border-radius:10px;background:var(--card-2);
+    display:flex;align-items:center;justify-content:center;font-size:17px;border:1px solid var(--line);
+  }
+  .sec-t{flex:1 1 auto;min-width:0;}
+  .sec-t b{display:block;font-size:14.5px;letter-spacing:-.01em;}
+  .sec-t span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sec-count{
+    flex:0 0 auto;font-size:11.5px;font-variant-numeric:tabular-nums;color:var(--ink-3);
+    border:1px solid var(--line-2);border-radius:99px;padding:3px 8px;
+  }
+  .sec-count.done{color:#8ff0a6;border-color:rgba(52,199,89,.3);background:var(--green-soft);}
+  .chev{flex:0 0 auto;width:9px;height:9px;border-right:1.8px solid var(--ink-3);border-bottom:1.8px solid var(--ink-3);
+    transform:rotate(45deg);transition:transform .22s;margin-left:2px;margin-top:-3px;}
+  .sec[data-open="false"] .chev{transform:rotate(-45deg);margin-top:1px;}
+  .sec-body{padding:0 0 6px;}
+  .sec[data-open="false"] .sec-body{display:none;}
+
+  /* ── item ── */
+  .item{
+    display:flex;gap:11px;padding:12px 15px 12px 13px;border-top:1px solid rgba(255,255,255,.055);
+    position:relative;
+  }
+  .item.flag{background:linear-gradient(90deg,rgba(240,180,41,.10),rgba(240,180,41,0) 60%);}
+  .item.flag::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--amber);}
+  .item.done .t{color:var(--ink-3);}
+  .item.done .t::after{content:"";}
+
+  .tick{
+    flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1.8px solid var(--line-2);
+    background:transparent;padding:0;margin-top:1px;position:relative;appearance:none;
+  }
+  .item.done .tick{border-color:var(--green);background:var(--green);}
+  .item.flag .tick{border-color:var(--amber);}
+  .item.done .tick::after{
+    content:"";position:absolute;left:8px;top:9px;width:11px;height:6px;
+    border-left:2.2px solid #06110a;border-bottom:2.2px solid #06110a;transform:rotate(-45deg);
+  }
+  .item.flag.done .tick::after{border-color:#1a1300;}
+
+  .body{flex:1 1 auto;min-width:0;}
+  .t{font-size:13.5px;color:#eef1f4;line-height:1.45;letter-spacing:-.01em;}
+  .t .must{
+    display:inline-block;vertical-align:1px;font-size:9.5px;font-weight:700;letter-spacing:.04em;
+    color:#ff9aa6;background:var(--red-soft);border-radius:4px;padding:1px 5px;margin-right:5px;
+  }
+  .hint{font-size:11.8px;color:var(--ink-3);line-height:1.55;margin-top:3px;}
+  .item.flag .hint{color:#cdb98a;}
+
+  .flag-btn{
+    flex:0 0 auto;align-self:flex-start;appearance:none;border:1px solid var(--line-2);background:transparent;
+    color:var(--ink-3);font:inherit;font-size:11px;font-weight:700;padding:5px 8px;border-radius:8px;margin-top:1px;
+    letter-spacing:-.01em;
+  }
+  .flag-btn[aria-pressed="true"]{background:var(--amber-soft);border-color:rgba(240,180,41,.45);color:#ffd479;}
+
+  .memo-link{
+    display:inline-flex;align-items:center;gap:4px;margin-top:6px;appearance:none;border:0;background:none;padding:0;
+    color:var(--ink-3);font:inherit;font-size:11.5px;font-weight:600;text-decoration:underline;text-underline-offset:2px;
+  }
+  .memo-link.has{color:#8ab4ff;text-decoration:none;}
+  .memo-wrap{margin-top:7px;display:none;}
+  .memo-wrap.open{display:block;}
+  textarea{
+    width:100%;min-height:56px;resize:vertical;border-radius:10px;border:1px solid var(--line-2);
+    background:#0e1116;color:var(--ink);font:inherit;font-size:16px;line-height:1.45;padding:9px 11px;
+    -webkit-appearance:none;
+  }
+  textarea::placeholder{color:#5c6470;font-size:13px;}
+  textarea:focus{outline:none;border-color:rgba(138,180,255,.55);}
+
+  .warn{
+    font-size:11.5px;line-height:1.45;color:#ffd479;background:rgba(240,180,41,.12);
+    border:1px solid rgba(240,180,41,.28);border-radius:9px;padding:6px 9px;margin-top:9px;
+  }
+
+  .empty{
+    text-align:center;color:var(--ink-3);font-size:13px;padding:34px 20px;border:1px dashed var(--line-2);
+    border-radius:16px;margin-bottom:12px;
+  }
+
+  footer{padding:6px 18px 24px;color:var(--ink-3);font-size:11px;line-height:1.65;}
+  footer b{color:var(--ink-2);}
+  footer a{color:#7f8b99;text-decoration:none;border-bottom:1px solid rgba(127,139,153,.35);}
+
+  /* ── dock ── */
+  .dock{
+    position:fixed;left:0;right:0;bottom:0;z-index:30;
+    padding:10px 14px calc(10px + var(--safe-b));
+    background:linear-gradient(180deg,rgba(11,13,16,0),rgba(11,13,16,.92) 38%);
+    display:flex;gap:9px;max-width:640px;margin:0 auto;pointer-events:none;
+  }
+  .dock > *{pointer-events:auto;}
+  .btn{
+    appearance:none;border:1px solid var(--line-2);background:rgba(24,28,34,.96);color:var(--ink);
+    font:inherit;font-size:13.5px;font-weight:650;padding:13px 16px;border-radius:13px;
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  }
+  .btn.primary{flex:1 1 auto;background:#fff;border-color:#fff;color:#0b0d10;}
+  .btn:active{transform:scale(.985);}
+  .btn.icon{flex:0 0 auto;width:50px;padding:0;font-size:17px;}
+
+  .sheet{
+    position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;justify-content:center;
+    background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  }
+  .sheet.open{display:flex;}
+  .sheet-in{
+    width:100%;max-width:640px;background:#14171c;border-radius:20px 20px 0 0;padding:18px 18px calc(18px + var(--safe-b));
+    border-top:1px solid var(--line-2);
+  }
+  .sheet h3{margin:0 0 4px;font-size:15px;}
+  .sheet p{margin:0 0 12px;font-size:12.5px;color:var(--ink-2);line-height:1.6;}
+  .sheet .btn{width:100%;margin-top:8px;text-align:center;}
+  .sheet .btn.danger{color:#ff8a97;border-color:rgba(227,25,55,.4);background:rgba(227,25,55,.12);}
+  .sheet .btn.ghost{background:transparent;}
+
+  .toast{
+    position:fixed;left:50%;bottom:calc(96px + var(--safe-b));transform:translate(-50%,10px);
+    background:#fff;color:#0b0d10;font-size:13px;font-weight:650;padding:11px 16px;border-radius:12px;
+    opacity:0;pointer-events:none;transition:all .22s;z-index:60;max-width:88vw;text-align:center;
+  }
+  .toast.on{opacity:1;transform:translate(-50%,0);}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 12 14"><path d="M6 13c-.2-3-1-6.4-3-8.6C5.4 5.2 6.6 5.2 9 4.4 7 6.6 6.2 10 6 13z" fill="#fff"/></svg></span>
+      <span class="eyebrow">Tesla Model 3 · Long Range</span>
+    </div>
+    <h1>인도 검수 체크리스트</h1>
+    <p class="sub"><b>2026. 11. 27 (금)</b> · 인도 센터 현장용</p>
+
+    <div class="prog">
+      <div class="prog-row">
+        <div class="prog-num"><b id="pDone">0</b><span id="pTotal">/ 0</span><span class="pc" id="pPct">0%</span></div>
+        <div class="prog-flags" id="pFlags"><span>⚠︎</span><span id="pFlagN">0</span>개 표시됨</div>
+      </div>
+      <div class="bar"><i id="pBar"></i></div>
+    </div>
+
+    <div class="chips" role="group" aria-label="항목 필터">
+      <button class="chip" data-filter="all" aria-pressed="true">전체 <span class="n" id="nAll"></span></button>
+      <button class="chip" data-filter="todo" aria-pressed="false">남은 항목 <span class="n" id="nTodo"></span></button>
+      <button class="chip" data-filter="flag" aria-pressed="false">하자 의심 <span class="n" id="nFlag"></span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>🧭 현장 순서 (40분 안팎)</h2>
+      <ol class="steps">
+        <li><span class="n">1</span><div>리셉션에서 <b>신분증 + Tesla 앱</b> 제시 → 카드키 수령<small>카드키 봉투에 차량 번호·주차 위치가 적혀 있어요. 보통 11시 예약이면 10:30부터 진행.</small></div></li>
+        <li><span class="n">2</span><div>차량 있는 층으로 이동해 <b>인수 수락 전에 검수</b><small><b>필수</b> 항목 먼저 → 시간 남으면 나머지. 외관 12분 → 실내 10분 → 기능·충전 8분. 비닐은 벗기고 확인.</small></div></li>
+        <li><span class="n">3</span><div>하자는 <b>사진 + 어드바이저</b>에게 바로<small>여기서 "이상" 표시해 둔 항목을 그대로 보여주면 됩니다.</small></div></li>
+        <li><span class="n">4</span><div>마지막에 앱에서 <b>인수 수락</b>(파란 버튼)<small>수락하면 폰키가 연결됩니다. 수락 후에도 앱 정비 접수는 가능하지만, 현장 확인이 가장 확실.</small></div></li>
+      </ol>
+    </section>
+
+    <section class="card deadline">
+      <h2>⏳ 하자 접수 기한 — 이게 제일 중요</h2>
+      <dl class="kv">
+        <dt>접수 기한</dt><dd>인도일 <b>당일</b> (불가피하면 익일까지)</dd>
+        <dt>조치 기한</dt><dd>인도일부터 <b>60일 이내</b> 센터 입고</dd>
+        <dt>접수 방법</dt><dd>Tesla 앱 → 정비 → 정비 요청 (사진 첨부)</dd>
+        <dt>주의</dt><dd>틴팅·PPF·블랙박스 등 <b>외부 시공 전</b>에 접수해야 무상</dd>
+      </dl>
+      <p class="tiny">도장 이물·페인트 흐름, 유리 내부 이물, 몰딩·트림 장착 불량은 조치 대상이지만 스월마크·스크래치·스톤칩, 오염·시트 주름, 타이어 펑크는 대상이 아닙니다. 판단은 현장 어드바이저·테크니션 확인이 최종.</p>
+    </section>
+
+    <section class="card">
+      <h2>📍 인도장 메모 (광명 기준)</h2>
+      <p>이케아 광명점 <b>P1 리셉션</b> · 경기 광명시 일직로 17<br>카드키는 P1에서 받고 차량은 P3에 있는 경우가 많습니다. 다른 센터라면 예약 문자 안내를 따르세요.</p>
+      <p class="tiny">주차는 10분당 800원, 1시간 회차 무료 · 당일 이케아 구매 영수증 있으면 5시간 무료. 인도장 이용은 보통 50분 내외라 검수에 시간을 몰아 쓰고, 여유 있게 도착하세요.</p>
+    </section>
+
+    <noscript>
+    <section class="card deadline">
+      <h2>⚠️ 스크립트가 꺼져 있어 체크 기능이 동작하지 않습니다</h2>
+      <p>이 화면에서는 자동 체크·저장이 안 됩니다. 아래 필수 25개만이라도 순서대로 확인하세요.</p>
+      <ol class="steps" style="counter-reset:none">
+        <li><span class="n">1</span><div>신분증 (모바일 신분증 가능)</div></li>
+        <li><span class="n">2</span><div>보조금·등록 서류 (해당 시)</div></li>
+        <li><span class="n">3</span><div>VIN 17자리 일치</div></li>
+        <li><span class="n">4</span><div>주행거리(오도미터) 확인</div></li>
+        <li><span class="n">5</span><div>배터리 잔량 50% 이상</div></li>
+        <li><span class="n">6</span><div>도장 이물(먼지 팁)·도장 흐름</div></li>
+        <li><span class="n">7</span><div>프렁크(보닛) 단차·높이</div></li>
+        <li><span class="n">8</span><div>헤드램프·테일램프 결로</div></li>
+        <li><span class="n">9</span><div>앞유리 왜곡(울렁임)</div></li>
+        <li><span class="n">10</span><div>유리 스크래치·돌빵·크랙</div></li>
+        <li><span class="n">11</span><div>타이어 제조일자(DOT)·마모·측면 손상</div></li>
+        <li><span class="n">12</span><div>앰비언트 라이트 전 구간 점등</div></li>
+        <li><span class="n">13</span><div>방향지시등 (레버 또는 휠 버튼)</div></li>
+        <li><span class="n">14</span><div>센터 디스플레이 터치·데드픽셀</div></li>
+        <li><span class="n">15</span><div>카메라 8개 화면</div></li>
+        <li><span class="n">16</span><div>오토파일럿 카메라 캘리브레이션</div></li>
+        <li><span class="n">17</span><div>스피커 전부 소리 확인</div></li>
+        <li><span class="n">18</span><div>와이퍼 전 단계·워셔액</div></li>
+        <li><span class="n">19</span><div>충전구 도어 개폐</div></li>
+        <li><span class="n">20</span><div>J1772 완속 어댑터 지급</div></li>
+        <li><span class="n">21</span><div>동봉품 수량 대조</div></li>
+        <li><span class="n">22</span><div>하자 부위 사진 (원거리·근접)</div></li>
+        <li><span class="n">23</span><div>어드바이저에게 현장 확인 요청</div></li>
+        <li><span class="n">24</span><div>앱 → 정비 → 정비 요청으로 접수</div></li>
+        <li><span class="n">25</span><div>외부 시공(틴팅·PPF) 전 접수 완료</div></li>
+      </ol>
+      <p class="tiny">하자 접수: 인도일 당일(익일까지) · 조치: 인도일부터 60일 내 입고 · 틴팅·PPF 전에 접수.</p>
+    </section>
+    </noscript>
+    <div id="list"></div>
+
+    <div id="empty" class="empty" style="display:none">해당하는 항목이 없어요.</div>
+
+    <footer>
+      <b>참고</b> 테슬라 코리아 인도 가이드·초기 불량 접수 안내(2025~2026), 카스페이스 신차검수 체크리스트, TSL Check 인도 당일 안내, 국내 인도 후기(2024~2026). 사양은 2026년 4분기(10월) 인도분 기준 — 방향지시등 레버·전면 범퍼 카메라(2025년 4분기 이후), 16인치 디스플레이·블랙 헤드라이너·V2L(2027년식)이 내 차에 해당하는지는 VIN 10번째 자리(V)와 주문 사양으로 확인하세요.
+      <br><br>체크·메모는 이 기기에 자동 저장됩니다.
+    </footer>
+  </main>
+
+  <div class="dock">
+    <button class="btn primary" id="btnSummary">표시한 곳 요약 복사</button>
+    <button class="btn icon" id="btnMenu" aria-label="더보기">⋯</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="sheet-in">
+    <h3>체크리스트 관리</h3>
+    <p id="sheetMsg">모든 체크·메모를 이 기기에서 지웁니다. 되돌릴 수 없어요.</p>
+    <button class="btn danger" id="btnReset">전체 초기화</button>
+    <button class="btn ghost" id="btnClose">닫기</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DATA = [
+    {
+      key:"prep", ico:"🎒", title:"출발 전 준비", sub:"서류·앱·장비 (집에서)",
+      items:[
+        {id:"p1", t:"신분증 (모바일 신분증 가능)", h:"본인 확인 필수. 리셉션에서 앱과 함께 보여줍니다.", must:1},
+        {id:"p2", t:"Tesla 앱 로그인 + 블루투스 켜기", h:"주문에 쓴 계정으로 미리 로그인. 현장에서 처음 하면 시간이 걸립니다."},
+        {id:"p3", t:"보조금·등록 서류 (해당 시)", h:"앱 입력과 별개로 인도 담당자에게 제출. 보조금 신청서·계약서·등본 등.", must:1},
+        {id:"p4", t:"보험 가입증명서 (인도일 효력)", h:"등록 전 필수. 개시일이 인도일과 맞는지 확인."},
+        {id:"p5", t:"셀프등록이면 번호판·봉인나사·등록증", h:"차 앞에 놓아두면 직원이 장착해 줍니다. 대행등록이면 없어도 됩니다."},
+        {id:"p6", t:"손전등 (휴대폰 플래시 대체 가능)", h:"P1·P3는 어둡습니다. 도장 이물·단차는 비스듬한 빛에서 보입니다."},
+        {id:"p7", t:"보조배터리·물티슈", h:"사진·앱으로 배터리를 많이 씁니다. 손자국 닦을 것도."},
+        {id:"p8", t:"인도 예약 문자·카톡 확인", h:"예약 시간, 차량 위치, 준비물 안내가 여기 적혀 있습니다."}
+      ]
+    },
+    {
+      key:"basic", ico:"🔎", title:"도착 · 기본 확인", sub:"VIN·주행거리·배터리·사양",
+      items:[
+        {id:"b1", t:"리셉션 체크인 → 카드키 수령", h:"신분증과 앱 화면 제시. 카드키 봉투에 차량 번호·위치가 적혀 있어요."},
+        {id:"b2", t:"앱 화면 파란 버튼 진행 (‘Tesla 가족’까지)", h:"인수 수락 전까지 안내에 따라 진행. 수락 버튼은 검수 끝나고 누르세요."},
+        {id:"b3", t:"VIN 17자리 일치", h:"운전석 앞유리 하단 VIN = 앱 = 등록증. 한 글자라도 다르면 즉시 문의.", must:1},
+        {id:"b4", t:"트림·색상·휠·시트 사양 일치", h:"주문서와 대조. 18인치 포톤(에어로 커버) / 19인치 다크 노바, 시트 색."},
+        {id:"b5", t:"주행거리(오도미터) 확인", h:"신차는 보통 수십 km 이내. 과도하면 사유를 물어보세요.", must:1},
+        {id:"b6", t:"배터리 잔량 50% 이상", h:"집까지 거리와 충전 계획 계산. 부족하면 충전 요청.", must:1},
+        {id:"b7", t:"2027년식 여부 (VIN 10번째 자리 ‘V’)", h:"V2L·16인치 디스플레이·블랙 헤드라이너 해당 여부가 갈립니다."}
+      ]
+    },
+    {
+      key:"ext", ico:"🚙", title:"외관 — 도장·단차·유리", sub:"밝은 곳에서 한 바퀴, 각도 바꿔가며",
+      items:[
+        {id:"e1", t:"도장 이물(먼지 팁)·도장 흐름", h:"볼록 튀어나온 티끌이 있는지. 패널 아래쪽까지 손바닥으로 쓸어보기.", must:1},
+        {id:"e2", t:"스크래치·찍힘·스월마크", h:"조명 각도를 바꿔가며. 문 손잡이 주변, 리어 휀더, 도어 엣지."},
+        {id:"e3", t:"범퍼·펜더 색차", h:"범퍼는 별도 라인 도장. 밝은 곳에서 펜더와 나란히 비교."},
+        {id:"e4", t:"프렁크(보닛) 단차·높이", h:"좌우 같은 자리끼리 비교. 한쪽이 뜨면 힌지 조정 문제.", must:1},
+        {id:"e5", t:"도어 4개 단차·체결 상태", h:"닫힘 소리·유격, 도어 고정 볼트 도장 상태까지."},
+        {id:"e6", t:"트렁크 리드 단차·간섭", h:"테일램프·범퍼와 맞닿는 부분. 닫을 때 걸리는 느낌."},
+        {id:"e7", t:"헤드램프·테일램프 결로", h:"렌즈 안 물방울·눈물 자국. 하이랜드 테일램프에서 흔한 이슈.", must:1},
+        {id:"e8", t:"트렁크 리드 물 자국·실링", h:"비 온 뒤라면 리드 내부·트렁크 카펫 물기 확인."},
+        {id:"e9", t:"앞유리 왜곡(울렁임)", h:"운전석에 앉아 비스듬히. 시야가 휘어 보이면 교체 대상.", must:1},
+        {id:"e10", t:"유리 스크래치·돌빵·크랙", h:"앞유리·글라스루프·측후면. 크랙은 그 자리에서 조치 요구.", must:1},
+        {id:"e11", t:"글라스 루프 단차·몰딩 들뜸", h:"루프 가장자리 고무 몰딩이 뜨거나 들쭉날쭉한지."},
+        {id:"e12", t:"휠 림 기스 + 에어로 커버 4개", h:"탁송 중 손상 잦음. 안쪽 면까지. 커버 누락·찍힘 확인."},
+        {id:"e13", t:"타이어 제조일자(DOT)·마모·측면 손상", h:"235/45R18. 사이드월 4자리(예: 3526). 찢김·펑크는 인수 거부급.", must:1},
+        {id:"e14", t:"타이어 공기압 4륜", h:"화면에서 수치 확인. 한쪽만 낮으면 펑크 의심."},
+        {id:"e15", t:"하부·범퍼 하단·잭 포인트", h:"낮은 자세로 촬영. 리프트 흔적·긁힘."},
+        {id:"e16", t:"몰딩·엠블럼·번호판 가드", h:"들뜸·찍힘. 신형은 전면 T 로고가 없는 게 정상."},
+        {id:"e17", t:"프렁크·트렁크 전동 개폐", h:"화면·앱·버튼으로 열고 닫기. 트렁크 높이 설정, 핸즈프리 개방."},
+      ]
+    },
+    {
+      key:"int", ico:"🪑", title:"실내 — 하이랜드 특화", sub:"앰비언트·시트·콘솔·씰",
+      items:[
+        {id:"i1", t:"앰비언트 라이트 전 구간 점등", h:"도어→대시 연결부 단선·부분 소등·색 불균일. 하이랜드 대표 하자.", must:1},
+        {id:"i2", t:"앰비언트 색·밝기 변경", h:"컨트롤 → 조명에서 색을 바꿔 전 구간이 같이 변하는지."},
+        {id:"i3", t:"방향지시등 (레버 또는 휠 버튼)", h:"내 차 사양대로 좌·우, 자동 복귀까지. 2025년 4분기 이후 입항분은 레버.", must:1},
+        {id:"i4", t:"스티어링 휠 버튼 (와이퍼·라이트·경적)", h:"버튼마다 눌림·딸깍 피드백. 경적·와이퍼·라이트가 모두 동작하는지."},
+        {id:"i5", t:"스티어링 휠 가죽·열선", h:"주름·들뜸·스티치. 열선은 1~2분 뒤 온기 확인."},
+        {id:"i6", t:"시트 오염·주름·스티치", h:"비닐 벗기고 확인. 밝은 시트는 이염·얼룩이 잘 보입니다."},
+        {id:"i7", t:"1열 통풍·열선", h:"3단까지, 바람 소리와 실제 바람. 흡입식이라 손등으로 확인."},
+        {id:"i8", t:"2열 열선 (좌·우 각각)", h:"90초 뒤 좌우 온도가 같은지. 한쪽 배선 누락 사례 있음."},
+        {id:"i9", t:"전동시트·메모리·이지엔트리", h:"전후·높이·틸트·리클라인 전 범위, 소리·걸림."},
+        {id:"i10", t:"후석 8인치 디스플레이", h:"터치 반응·밝기·공조·시트 메뉴 진입. 화면 들뜸이나 이물이 없는지."},
+        {id:"i11", t:"센터콘솔 뚜껑·수납·무선충전 2구", h:"여닫힘 댐핑, 폰 2대 올려 충전 표시 확인."},
+        {id:"i12", t:"글로브박스 개폐", h:"화면 버튼으로 열림. 걸리거나 안 열리면 접수."},
+        {id:"i13", t:"도어 트림·필러·헤드라이너", h:"오염·들뜸·찍힘. 2027년식은 검정 헤드라이너라 자국이 잘 보임."},
+        {id:"i14", t:"실내등 앞·뒤 점등", h:"2열 실내등이 저절로 켜지는 사례 있음. 껐다 켜서 확인."},
+        {id:"i15", t:"안전벨트·아이소픽스·2열 폴딩", h:"당김·버클 체결, 폴딩 레버, 등받이 각도."},
+        {id:"i16", t:"도어 씰·웨더스트립 들뜸", h:"풍절음 원인. 문 닫고 유리 가장자리 씰 확인."},
+        {id:"i17", t:"창문 4개 원터치·안티핀치", h:"끝까지 올리고 내리기. 중간에 멈추거나 삐걱이면 접수."},
+        {id:"i18", t:"매트·트렁크 보드·프렁크", h:"지급 매트 장착, 하부 수납 커버 여닫힘."}
+      ]
+    },
+    {
+      key:"func", ico:"⚙️", title:"기능 · 전장", sub:"스크린·카메라·오디오·조작",
+      items:[
+        {id:"f1", t:"센터 디스플레이 터치·데드픽셀", h:"흰 배경(청소 모드) 띄워 구석까지. 2027년식은 16인치 QHD.", must:1},
+        {id:"f2", t:"화면 반응·밝기·지도 확대", h:"스와이프·확대 시 버벅임 없는지."},
+        {id:"f3", t:"카메라 8개 화면", h:"전면 범퍼 카메라(신형)·좌우 리피터·B필러·후방. 왜곡·먼지·김서림.", must:1},
+        {id:"f4", t:"후진·주차 화면 거리 표시", h:"후진 기어 넣고 선명도·거리 수치 확인."},
+        {id:"f5", t:"오토파일럿 카메라 캘리브레이션", h:"수십 km 주행 후 활성화가 정상. 0%에서 멈춰 있으면 그 자리에서 접수.", must:1},
+        {id:"f6", t:"스피커 전부 소리 확인", h:"국내 프리미엄 LR RWD는 9개 사양. 좌우 밸런스·잡음.", must:1},
+        {id:"f7", t:"마이크·블루투스·음성 명령", h:"통화 테스트, ‘온도 22도’ 같은 명령 인식."},
+        {id:"f8", t:"공조 냉방·난방·송풍 방향", h:"최대/최소, 소음, 1열·2열 각각."},
+        {id:"f9", t:"성에 제거·열선 윈드실드", h:"작동 표시등, 뒷유리 열선 구간별로."},
+        {id:"f10", t:"와이퍼 전 단계·워셔액", h:"채터링·소리, 분사 방향이 유리에 닿는지.", must:1},
+        {id:"f11", t:"라이트·경적·비상등·후진등", h:"상향/하향, 어댑티브, 후방 안개등까지."},
+        {id:"f12", t:"사이드미러 접이·조절·열선", h:"양쪽 접힘, 각도 기억, 깜빡이 표시."},
+        {id:"f13", t:"기어 변속·비상 변속 버튼", h:"화면 스와이프로 D/R/N. 천장 비상 변속 버튼과 도어 비상 개방 레버 위치 확인."},
+        {id:"f14", t:"브레이크·가속·회생제동", h:"짧게라도 주행 가능하면. 페달이 스펀지처럼 들어가면 인수 보류."},
+        {id:"f15", t:"소프트웨어·지도 버전·오류 메시지", h:"경고등·오류 없음, 업데이트 가능 상태."},
+        {id:"f16", t:"앱 연동 (폰키·잠금·공조)", h:"블루투스 키 등록, 앱으로 문 열고 공조 켜기."}
+      ]
+    },
+    {
+      key:"charge", ico:"🔌", title:"충전 · 동봉품", sub:"충전구·어댑터·지급품 수량",
+      items:[
+        {id:"c1", t:"충전구 도어 개폐", h:"앱·화면·버튼으로. 걸림·소리, 닫힘 단차.", must:1},
+        {id:"c2", t:"완속 충전 테스트 (J1772)", h:"현장에 충전기가 있으면 1~2분이라도. 충전 표시·잠금."},
+        {id:"c3", t:"급속 충전 방식 확인", h:"수퍼차저는 그대로, 공용 급속은 DC콤보 어댑터(별매) 필요."},
+        {id:"c4", t:"J1772 완속 어댑터 지급", h:"기본 지급품. 트렁크 하단·글로브박스 확인.", must:1},
+        {id:"c5", t:"카드키 2장 인식", h:"B필러에 태그해 잠금/해제, 센터콘솔 인식까지."},
+        {id:"c6", t:"동봉품 수량 대조", h:"견인고리·삼각대·소화기·USB·플로어매트. 지급 리스트와 대조.", must:1},
+        {id:"c7", t:"V2L (2027년식 · 어댑터 별매)", h:"어댑터 있으면 콘센트 테스트. 없으면 14.5만 원 별도 구매."},
+        {id:"c8", t:"모바일 커넥터·DC콤보 어댑터 없음 확인", h:"둘 다 기본 지급 아님. 빠진 게 아니라 별매입니다."}
+      ]
+    },
+    {
+      key:"wrap", ico:"✅", title:"마무리 · 하자 접수", sub:"사진 → 어드바이저 → 앱 → 인수",
+      items:[
+        {id:"w1", t:"하자 부위 사진 (원거리·근접)", h:"차량 번호나 계기판이 함께 나오게. 날짜 증빙이 됩니다.", must:1},
+        {id:"w2", t:"어드바이저에게 현장 확인 요청", h:"‘이상’ 표시한 항목을 화면째 보여주고 Due Bill 가능 여부 확인.", must:1},
+        {id:"w3", t:"앱 → 정비 → 정비 요청으로 접수", h:"인도 당일(불가피하면 익일)까지. 사진 첨부 필수.", must:1},
+        {id:"w4", t:"접수 번호·담당자 이름 메모", h:"나중에 조치 기한(60일) 안에 입고해야 합니다."},
+        {id:"w5", t:"외부 시공(틴팅·PPF) 전 접수 완료", h:"시공 후 발견된 손상은 무상 조치 불가.", must:1},
+        {id:"w6", t:"인수 수락 (파란 버튼)", h:"모든 확인이 끝난 뒤 마지막에. 수락하면 폰키 연결."},
+        {id:"w7", t:"인도 후: 등록·보험 개시일·하이패스·충전카드", h:"번호판 부착, 하이패스 등록, 환경부/로밍 충전카드 준비."}
+      ]
+    }
+  ];
+
+  var KEY = "tesla-m3-delivery-v1";
+  var state = load();
+
+  var storageOk = (function(){
+    try{ localStorage.setItem("__t","1"); localStorage.removeItem("__t"); return true; }
+    catch(e){ return false; }
+  })();
+  if(!storageOk){
+    var warn = document.createElement("div");
+    warn.className = "warn";
+    warn.textContent = "이 화면에서는 자동 저장이 안 될 수 있어요. 탭을 닫지 말고 현장에서 사용하세요.";
+    document.querySelector("header").appendChild(warn);
+  }
+
+  function load(){
+    var s = {checked:{}, flags:{}, notes:{}, closed:{}, filter:"all"};
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(raw){
+        var p = JSON.parse(raw);
+        if(p && typeof p === "object"){
+          s.checked = p.checked || {};
+          s.flags = p.flags || {};
+          s.notes = p.notes || {};
+          s.closed = p.closed || {};
+          s.filter = p.filter || "all";
+        }
+      }
+    }catch(e){}
+    return s;
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]; }); }
+
+  var allItems = [];
+  DATA.forEach(function(cat){ cat.items.forEach(function(it){ it.cat = cat.key; allItems.push(it); }); });
+  var byId = {};
+  allItems.forEach(function(it){ byId[it.id] = it; });
+
+  var listEl = $("list");
+  var emptyEl = $("empty");
+
+  function build(){
+    var html = "";
+    DATA.forEach(function(cat){
+      var open = state.closed[cat.key] !== true;
+      html += '<section class="sec" data-cat="'+cat.key+'" data-open="'+open+'">';
+      html += '<button class="sec-head" type="button" data-toggle="'+cat.key+'" aria-expanded="'+open+'">';
+      html += '<span class="sec-ico">'+cat.ico+'</span>';
+      html += '<span class="sec-t"><b>'+esc(cat.title)+'</b><span>'+esc(cat.sub)+'</span></span>';
+      html += '<span class="sec-count" data-count="'+cat.key+'">0/'+cat.items.length+'</span>';
+      html += '<span class="chev"></span></button>';
+      html += '<div class="sec-body">';
+      cat.items.forEach(function(it){
+        var done = !!state.checked[it.id];
+        var flag = !!state.flags[it.id];
+        var note = state.notes[it.id] || "";
+        html += '<div class="item'+(done?' done':'')+(flag?' flag':'')+'" data-id="'+it.id+'">';
+        html += '<button class="tick" type="button" data-check="'+it.id+'" aria-label="확인 완료" aria-pressed="'+done+'"></button>';
+        html += '<div class="body">';
+        html += '<div class="t">'+(it.must?'<span class="must">필수</span>':'')+esc(it.t)+'</div>';
+        html += '<div class="hint">'+esc(it.h)+'</div>';
+        html += '<button class="memo-link'+(note?' has':'')+'" type="button" data-memo="'+it.id+'">'+(note?'메모 있음':'＋ 메모')+'</button>';
+        html += '<div class="memo-wrap'+(note?' open':'')+'" data-wrap="'+it.id+'"><textarea data-note="'+it.id+'" rows="2" placeholder="위치·증상 메모 (예: 조수석 도어 상단 3mm 뜸)">'+esc(note)+'</textarea></div>';
+        html += '</div>';
+        html += '<button class="flag-btn" type="button" data-flag="'+it.id+'" aria-pressed="'+flag+'">'+(flag?'표시됨':'이상')+'</button>';
+        html += '</div>';
+      });
+      html += '</div></section>';
+    });
+    listEl.innerHTML = html;
+  }
+
+  function refresh(){
+    var done = 0, flags = 0, todo = 0;
+    allItems.forEach(function(it){
+      if(state.checked[it.id]) done++;
+      if(state.flags[it.id]) flags++;
+      if(!state.checked[it.id]) todo++;
+    });
+    var total = allItems.length;
+    var pct = total ? Math.round(done/total*100) : 0;
+    $("pDone").textContent = done;
+    $("pTotal").textContent = "/ " + total;
+    $("pPct").textContent = pct + "%";
+    $("pBar").style.width = pct + "%";
+    $("pFlagN").textContent = flags;
+    $("pFlags").classList.toggle("on", flags > 0);
+    $("nAll").textContent = total;
+    $("nTodo").textContent = todo;
+    $("nFlag").textContent = flags;
+
+    DATA.forEach(function(cat){
+      var c = 0;
+      cat.items.forEach(function(it){ if(state.checked[it.id]) c++; });
+      var el = listEl.querySelector('[data-count="'+cat.key+'"]');
+      if(el){
+        el.textContent = c + "/" + cat.items.length;
+        el.classList.toggle("done", c === cat.items.length);
+      }
+    });
+    syncRows();
+    applyFilter();
+  }
+
+  function syncRows(){
+    allItems.forEach(function(it){
+      var row = listEl.querySelector('.item[data-id="'+it.id+'"]');
+      if(!row) return;
+      var done = !!state.checked[it.id];
+      var flag = !!state.flags[it.id];
+      row.classList.toggle("done", done);
+      row.classList.toggle("flag", flag);
+      var tick = row.querySelector("[data-check]");
+      if(tick) tick.setAttribute("aria-pressed", String(done));
+      var fb = row.querySelector("[data-flag]");
+      if(fb){
+        fb.setAttribute("aria-pressed", String(flag));
+        fb.textContent = flag ? "표시됨" : "이상";
+      }
+    });
+  }
+
+  function applyFilter(){
+    var f = state.filter, shown = 0;
+    DATA.forEach(function(cat){
+      var secEl = listEl.querySelector('.sec[data-cat="'+cat.key+'"]');
+      if(!secEl) return;
+      var visible = 0;
+      cat.items.forEach(function(it){
+        var row = secEl.querySelector('.item[data-id="'+it.id+'"]');
+        if(!row) return;
+        var ok = true;
+        if(f === "todo") ok = !state.checked[it.id];
+        else if(f === "flag") ok = !!state.flags[it.id];
+        row.style.display = ok ? "" : "none";
+        if(ok) visible++;
+      });
+      secEl.style.display = visible ? "" : "none";
+      shown += visible;
+      if(f !== "all" && visible){
+        secEl.setAttribute("data-open","true");
+        secEl.querySelector(".sec-head").setAttribute("aria-expanded","true");
+      }
+    });
+    emptyEl.style.display = shown ? "none" : "block";
+  }
+
+  listEl.addEventListener("click", function(e){
+    var head = e.target.closest("[data-toggle]");
+    if(head){
+      var key = head.getAttribute("data-toggle");
+      var sec = head.closest(".sec");
+      var open = sec.getAttribute("data-open") !== "false";
+      sec.setAttribute("data-open", String(!open));
+      head.setAttribute("aria-expanded", String(!open));
+      state.closed[key] = open;
+      save();
+      return;
+    }
+
+    var ck = e.target.closest("[data-check]");
+    if(ck){
+      var id = ck.getAttribute("data-check");
+      state.checked[id] = !state.checked[id];
+      save(); refresh();
+      return;
+    }
+
+    var fb = e.target.closest("[data-flag]");
+    if(fb){
+      var fid = fb.getAttribute("data-flag");
+      state.flags[fid] = !state.flags[fid];
+      if(state.flags[fid]) state.checked[fid] = true;
+      save(); refresh();
+      return;
+    }
+
+    var ml = e.target.closest("[data-memo]");
+    if(ml){
+      e.stopPropagation();
+      var mid = ml.getAttribute("data-memo");
+      var wrap = listEl.querySelector('[data-wrap="'+mid+'"]');
+      wrap.classList.toggle("open");
+      if(wrap.classList.contains("open")){
+        var ta = wrap.querySelector("textarea");
+        setTimeout(function(){ ta.focus(); }, 30);
+      }
+      return;
+    }
+
+    // 행 본문 탭 → 체크 토글
+    var itemRow = e.target.closest(".item");
+    if(itemRow && !e.target.closest("textarea")){
+      var rid = itemRow.getAttribute("data-id");
+      state.checked[rid] = !state.checked[rid];
+      save(); refresh();
+      return;
+    }
+  });
+
+  listEl.addEventListener("input", function(e){
+    var ta = e.target.closest ? e.target.closest("[data-note]") : null;
+    if(!ta) return;
+    var id = ta.getAttribute("data-note");
+    var v = ta.value;
+    if(v.trim()) state.notes[id] = v; else delete state.notes[id];
+    var link = listEl.querySelector('[data-memo="'+id+'"]');
+    if(link){
+      link.classList.toggle("has", !!v.trim());
+      link.textContent = v.trim() ? "메모 있음" : "＋ 메모";
+    }
+    save();
+  });
+
+  document.querySelectorAll(".chip").forEach(function(ch){
+    ch.addEventListener("click", function(){
+      state.filter = ch.getAttribute("data-filter");
+      document.querySelectorAll(".chip").forEach(function(c){
+        c.setAttribute("aria-pressed", String(c === ch));
+      });
+      save();
+      applyFilter();
+    });
+  });
+
+  function toast(msg){
+    var el = $("toast");
+    el.textContent = msg;
+    el.classList.add("on");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ el.classList.remove("on"); }, 1800);
+  }
+
+  function summaryText(){
+    var flagged = allItems.filter(function(it){ return state.flags[it.id]; });
+    var decided = allItems.filter(function(it){ return state.checked[it.id] && !state.flags[it.id]; });
+    var lines = [];
+    lines.push("[테슬라 모델3 인도 검수] " + new Date().toLocaleDateString("ko-KR"));
+    lines.push("확인 " + decided.length + "/" + allItems.length + " · 하자 의심 " + flagged.length + "곳");
+    if(flagged.length){
+      lines.push("");
+      lines.push("■ 하자 의심");
+      flagged.forEach(function(it, i){
+        var cat = DATA.filter(function(c){ return c.key === it.cat; })[0];
+        var note = (state.notes[it.id] || "").trim();
+        lines.push((i+1) + ". [" + cat.title + "] " + it.t + (note ? " — " + note : ""));
+      });
+    } else {
+      lines.push("");
+      lines.push("■ 하자 의심 항목 없음");
+    }
+    var notes = allItems.filter(function(it){ return (state.notes[it.id]||"").trim() && !state.flags[it.id]; });
+    if(notes.length){
+      lines.push("");
+      lines.push("■ 기타 메모");
+      notes.forEach(function(it){ lines.push("- " + it.t + " — " + state.notes[it.id].trim()); });
+    }
+    return lines.join("\n");
+  }
+
+  $("btnSummary").addEventListener("click", function(){
+    var text = summaryText();
+    var done = function(){ toast("요약을 복사했어요"); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  });
+
+  function fallbackCopy(text){
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand("copy"); toast("요약을 복사했어요"); }
+    catch(e){ toast("복사가 안 됐어요"); }
+    document.body.removeChild(ta);
+  }
+
+  var sheet = $("sheet");
+  $("btnMenu").addEventListener("click", function(){ sheet.classList.add("open"); });
+  $("btnClose").addEventListener("click", function(){ sheet.classList.remove("open"); });
+  sheet.addEventListener("click", function(e){ if(e.target === sheet) sheet.classList.remove("open"); });
+  $("btnReset").addEventListener("click", function(){
+    state = {checked:{}, flags:{}, notes:{}, closed:{}, filter:"all"};
+    save();
+    document.querySelectorAll(".chip").forEach(function(c){
+      c.setAttribute("aria-pressed", String(c.getAttribute("data-filter") === "all"));
+    });
+    sheet.classList.remove("open");
+    build(); refresh();
+    toast("초기화했어요");
+  });
+
+  build();
+  refresh();
+  document.querySelectorAll(".chip").forEach(function(c){
+    c.setAttribute("aria-pressed", String(c.getAttribute("data-filter") === state.filter));
+  });
+  applyFilter();
+})();
+</script>
+</body>
+</html>
