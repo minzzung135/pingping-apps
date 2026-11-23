@@ -177,6 +177,22 @@
   }
   .flag-btn[aria-pressed="true"]{background:var(--amber-soft);border-color:rgba(240,180,41,.45);color:#ffd479;}
 
+  /* ── guide: 출고 직후 초기 설정 ── */
+  .guide-head{display:flex;align-items:center;gap:10px;margin:24px 4px 10px;}
+  .guide-head .tag{font-size:10px;letter-spacing:.14em;font-weight:700;color:#8ab4ff;text-transform:uppercase;white-space:nowrap;}
+  .guide-head .rule{flex:1 1 auto;height:1px;background:linear-gradient(90deg,rgba(138,180,255,.42),rgba(255,255,255,.04));}
+  .guide-intro{border-color:rgba(70,120,255,.30);background:linear-gradient(180deg,rgba(70,120,255,.11),rgba(70,120,255,.028));}
+  .guide-intro h2{color:#a9c6ff;flex-wrap:wrap;}
+  .guide-count{
+    display:inline-flex;align-items:baseline;gap:1px;font-variant-numeric:tabular-nums;margin-left:auto;
+    border:1px solid rgba(138,180,255,.35);background:rgba(70,120,255,.14);color:#cfe0ff;
+    border-radius:99px;padding:2px 9px;font-size:11px;font-weight:700;
+  }
+  .guide-count b{font-size:13px;color:#fff;}
+  .sec[data-group="setup"] .sec-ico{background:rgba(70,120,255,.13);border-color:rgba(70,120,255,.28);}
+  .sec[data-group="setup"] .item .t{font-size:13px;}
+  .sec[data-group="setup"] .item .hint{color:#8d97a4;}
+
   .memo-link{
     display:inline-flex;align-items:center;gap:4px;margin-top:6px;appearance:none;border:0;background:none;padding:0;
     color:var(--ink-3);font:inherit;font-size:11.5px;font-weight:600;text-decoration:underline;text-underline-offset:2px;
@@ -279,6 +295,7 @@
         <li><span class="n">2</span><div>차량 있는 층으로 이동해 <b>인수 수락 전에 검수</b><small><b>필수</b> 항목 먼저 → 시간 남으면 나머지. 외관 12분 → 실내 10분 → 기능·충전 8분. 비닐은 벗기고 확인.</small></div></li>
         <li><span class="n">3</span><div>하자는 <b>사진 + 어드바이저</b>에게 바로<small>여기서 "이상" 표시해 둔 항목을 그대로 보여주면 됩니다.</small></div></li>
         <li><span class="n">4</span><div>마지막에 앱에서 <b>인수 수락</b>(파란 버튼)<small>수락하면 폰키가 연결됩니다. 수락 후에도 앱 정비 접수는 가능하지만, 현장 확인이 가장 확실.</small></div></li>
+        <li><span class="n">5</span><div>차 안에 앉아 <b>초기 설정 16개</b> 체크하고 출발<small>아래 ‘출고 직후 필수 초기 설정’ 가이드. 5분이면 끝납니다.</small></div></li>
       </ol>
     </section>
 
@@ -331,6 +348,13 @@
         <li><span class="n">25</span><div>외부 시공(틴팅·PPF) 전 접수 완료</div></li>
       </ol>
       <p class="tiny">하자 접수: 인도일 당일(익일까지) · 조치: 인도일부터 60일 내 입고 · 틴팅·PPF 전에 접수.</p>
+      <p class="tiny" style="margin-top:14px;line-height:1.9"><b>출고 직후 초기 설정 16개</b> (인수 수락 후 차 안에서)<br>
+        🔑 휴대폰 키 추가 · 워크어웨이 도어 잠금+홈 제외 · 운전자 프로필+이지 엔트리<br>
+        🔋 충전 한도 80% · 배터리 잔량 % 표시<br>
+        🚗 가속 컴포트 · 정지 모드 홀드 · 조향 가볍게/표준<br>
+        🛡️ 감시 모드+집·직장 제외 · 대시캠 자동+경적 시 저장(글로브박스 USB) · 오토스티어+전방 충돌 경고 보통 · 뒷좌석 차일드락<br>
+        🌡️ 좌석·핸들 열선 자동 · 미러 자동 틸트/접힘 · 조명 자동+어댑티브 하이빔 · 캐빈 과열 보호 끄기
+      </p>
     </section>
     </noscript>
     <div id="list"></div>
@@ -480,6 +504,47 @@
         {id:"w6", t:"인수 수락 (파란 버튼)", h:"모든 확인이 끝난 뒤 마지막에. 수락하면 폰키 연결."},
         {id:"w7", t:"인도 후: 등록·보험 개시일·하이패스·충전카드", h:"번호판 부착, 하이패스 등록, 환경부/로밍 충전카드 준비."}
       ]
+    },
+    {
+      key:"set-key", group:"setup", ico:"🔑", title:"키 · 잠금", sub:"폰키 · 워크어웨이 · 프로필",
+      items:[
+        {id:"k1", t:"휴대폰 키 추가 (Tesla 앱)", h:"앱 → 보안 → 휴대폰 키 추가, 또는 컨트롤 → 잠금 → 키. 카드키를 센터콘솔에 올려두고 블루투스 켠 상태로 진행."},
+        {id:"k2", t:"워크어웨이 도어 잠금 ON + ‘홈에서 제외’ 체크", h:"컨트롤 → 잠금 → 워크어웨이 도어 잠금. 집에서는 잠기지 않도록 ‘홈에서 제외’도 함께 켜세요."},
+        {id:"k3", t:"운전자 프로필 + 이지 엔트리(Easy Entry) ON", h:"컨트롤 → 운전자 프로필에서 시트·미러 위치를 내 이름으로 저장. 이지 엔트리를 켜면 하차 시 시트가 뒤로 물러나 타기 편해요."}
+      ]
+    },
+    {
+      key:"set-batt", group:"setup", ico:"🔋", title:"배터리 · 충전", sub:"일상 80% · 잔량 %",
+      items:[
+        {id:"bt1", t:"일상 충전 한도 80%", h:"컨트롤 → 충전 → 충전 한도 슬라이더를 80%에. 롱레인지 RWD는 NCM 배터리라 평소 80%가 수명에 좋고, 장거리 출발 전날에만 100%."},
+        {id:"bt2", t:"상단 배터리 잔량 % 표시", h:"디스플레이 → 배터리 표시 = 퍼센트. 화면 상단 배터리 아이콘을 눌러 바꿔도 됩니다."}
+      ]
+    },
+    {
+      key:"set-drive", group:"setup", ico:"🚗", title:"주행 · 멀미 방지", sub:"컴포트 · 홀드 · 조향",
+      items:[
+        {id:"d1", t:"가속 모드 컴포트(Chill)", h:"컨트롤 → 주행 → 가속 모드 = 컴포트. 출발이 부드러워 아이가 멀미를 덜 하고, 겨울 난방으로 줄어든 주행거리에도 유리해요."},
+        {id:"d2", t:"정지 모드 홀드(Hold)", h:"컨트롤 → 주행 → 정지 모드 = 홀드. 브레이크에서 발을 떼도 차가 서 있고, 페달 하나로 가속·감속(원페달)합니다."},
+        {id:"d3", t:"조향 모드 가볍게 또는 표준", h:"컨트롤 → 주행 → 조향 모드. 주차·시내는 ‘가볍게’, 고속 안정감은 ‘표준’. 취향대로 골라두세요."}
+      ]
+    },
+    {
+      key:"set-safe", group:"setup", ico:"🛡️", title:"안전 · 감시 · 블랙박스", sub:"센트리 · 대시캠 · 오토스티어",
+      items:[
+        {id:"sf1", t:"감시 모드(센트리) ON + 집·직장 제외", h:"컨트롤 → 안전 → 감시 모드. ‘홈/회사/즐겨찾기에서 제외’를 켜야 집 주차장에서 배터리를 아낍니다. 잔량 20% 이하에서는 자동으로 꺼져요."},
+        {id:"sf2", t:"대시캠 자동 + 경적 시 저장 (글로브박스 USB 확인)", h:"컨트롤 → 안전 → 대시캠 = 자동, ‘경적 시 저장’ ON. 글로브박스 안 USB 드라이브가 꽂혀 있고 대시캠 아이콘이 활성인지 확인."},
+        {id:"sf3", t:"오토파일럿(오토스티어) ON + 전방 충돌 경고 ‘보통’", h:"컨트롤 → 오토파일럿 → 오토스티어 활성화. 전방 충돌 경고는 ‘보통’(기본). 카메라 캘리브레이션은 주행 후 자동 완료."},
+        {id:"sf4", t:"뒷좌석 차일드락 · 창문 잠금 (아이 동승 시)", h:"컨트롤 → 잠금 → 차일드락(좌/우). 뒷좌석 도어·창문이 안에서 열리지 않아요. 어른만 탈 때는 해제."}
+      ]
+    },
+    {
+      key:"set-comfort", group:"setup", ico:"🌡️", title:"편의 · 조명", sub:"열선 자동 · 미러 · 하이빔",
+      items:[
+        {id:"cf1", t:"좌석 · 핸들 열선 자동(Auto)", h:"공조 화면 아래 좌석 아이콘 → 자동. 실내 온도에 맞춰 알아서 켜져 겨울 아침이 편해요. 핸들 열선도 같은 방식으로."},
+        {id:"cf2", t:"사이드 미러 자동 틸트 + 자동 접힘 ON", h:"컨트롤 → 미러 → ‘미러 자동 틸트’(후진 시 아래로)와 ‘미러 자동 접기’(주차 시 접힘) 모두 켜기."},
+        {id:"cf3", t:"조명 자동 + 어댑티브 하이빔 ON", h:"컨트롤 → 조명 → 헤드라이트 = 자동, 어댑티브 하이빔 ON. 상향등을 알아서 가려줘 마주 오는 차에 안 비춰요."},
+        {id:"cf4", t:"캐빈 과열 보호 끄기", h:"컨트롤 → 안전 → 캐빈 과열 보호 = 끄기. 안 쓰면 배터리를 아낍니다. 여름 장거리 전 충전할 땐 ‘팬만’도 괜찮아요."}
+      ]
     }
   ];
 
@@ -521,18 +586,34 @@
   function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]; }); }
 
   var allItems = [];
-  DATA.forEach(function(cat){ cat.items.forEach(function(it){ it.cat = cat.key; allItems.push(it); }); });
+  DATA.forEach(function(cat){
+    cat.items.forEach(function(it){ it.cat = cat.key; it.setup = cat.group === "setup"; allItems.push(it); });
+  });
   var byId = {};
   allItems.forEach(function(it){ byId[it.id] = it; });
+  var setupTotal = allItems.filter(function(it){ return it.setup; }).length;
 
   var listEl = $("list");
   var emptyEl = $("empty");
 
+  function guideHtml(){
+    return '<div class="guide" id="guide">'
+      + '<div class="guide-head"><span class="tag">After Delivery</span><span class="rule"></span></div>'
+      + '<section class="card guide-intro">'
+      + '<h2>🛠️ 출고 직후 필수 초기 설정 <span class="guide-count"><b id="gDone">0</b>/<span id="gTotal">'+setupTotal+'</span></span></h2>'
+      + '<p>인수 수락 뒤 <b>차 안에서 5분</b>이면 끝나는 설정이에요. <b>롱레인지 RWD</b>(NCM 배터리)·아이 동승 기준으로 골랐습니다. 화면 <b>컨트롤</b>에서 하나씩 맞추고 체크하세요.</p>'
+      + '<p class="tiny">설정 메뉴가 안 보이거나 작동하지 않으면 ＋메모에 적어두고 어드바이저에게 문의하세요. 소프트웨어 버전에 따라 메뉴 위치가 조금 다를 수 있어요.</p>'
+      + '</section></div>';
+  }
+
   function build(){
     var html = "";
+    var guideOnce = false;
     DATA.forEach(function(cat){
+      var isSetup = cat.group === "setup";
+      if(isSetup && !guideOnce){ html += guideHtml(); guideOnce = true; }
       var open = state.closed[cat.key] !== true;
-      html += '<section class="sec" data-cat="'+cat.key+'" data-open="'+open+'">';
+      html += '<section class="sec" data-cat="'+cat.key+'" data-open="'+open+'"'+(isSetup?' data-group="setup"':'')+'>';
       html += '<button class="sec-head" type="button" data-toggle="'+cat.key+'" aria-expanded="'+open+'">';
       html += '<span class="sec-ico">'+cat.ico+'</span>';
       html += '<span class="sec-t"><b>'+esc(cat.title)+'</b><span>'+esc(cat.sub)+'</span></span>';
@@ -549,9 +630,11 @@
         html += '<div class="t">'+(it.must?'<span class="must">필수</span>':'')+esc(it.t)+'</div>';
         html += '<div class="hint">'+esc(it.h)+'</div>';
         html += '<button class="memo-link'+(note?' has':'')+'" type="button" data-memo="'+it.id+'">'+(note?'메모 있음':'＋ 메모')+'</button>';
-        html += '<div class="memo-wrap'+(note?' open':'')+'" data-wrap="'+it.id+'"><textarea data-note="'+it.id+'" rows="2" placeholder="위치·증상 메모 (예: 조수석 도어 상단 3mm 뜸)">'+esc(note)+'</textarea></div>';
+        html += '<div class="memo-wrap'+(note?' open':'')+'" data-wrap="'+it.id+'"><textarea data-note="'+it.id+'" rows="2" placeholder="'+(isSetup?'설정 메모 (예: 집 주소 등록함, USB 없음)':'위치·증상 메모 (예: 조수석 도어 상단 3mm 뜸)')+'">'+esc(note)+'</textarea></div>';
         html += '</div>';
-        html += '<button class="flag-btn" type="button" data-flag="'+it.id+'" aria-pressed="'+flag+'">'+(flag?'표시됨':'이상')+'</button>';
+        if(!isSetup){
+          html += '<button class="flag-btn" type="button" data-flag="'+it.id+'" aria-pressed="'+flag+'">'+(flag?'표시됨':'이상')+'</button>';
+        }
         html += '</div>';
       });
       html += '</div></section>';
@@ -587,6 +670,14 @@
         el.classList.toggle("done", c === cat.items.length);
       }
     });
+
+    var setupDone = 0;
+    allItems.forEach(function(it){ if(it.setup && state.checked[it.id]) setupDone++; });
+    var gd = $("gDone");
+    if(gd) gd.textContent = setupDone;
+    var gt = $("gTotal");
+    if(gt) gt.textContent = setupTotal;
+
     syncRows();
     applyFilter();
   }
@@ -610,7 +701,7 @@
   }
 
   function applyFilter(){
-    var f = state.filter, shown = 0;
+    var f = state.filter, shown = 0, setupShown = 0;
     DATA.forEach(function(cat){
       var secEl = listEl.querySelector('.sec[data-cat="'+cat.key+'"]');
       if(!secEl) return;
@@ -626,11 +717,14 @@
       });
       secEl.style.display = visible ? "" : "none";
       shown += visible;
+      if(cat.group === "setup" && visible) setupShown += visible;
       if(f !== "all" && visible){
         secEl.setAttribute("data-open","true");
         secEl.querySelector(".sec-head").setAttribute("aria-expanded","true");
       }
     });
+    var guideEl = $("guide");
+    if(guideEl) guideEl.style.display = setupShown ? "" : "none";
     emptyEl.style.display = shown ? "none" : "block";
   }
 
